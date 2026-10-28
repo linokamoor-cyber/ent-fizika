@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ЕНТ физика пробник 1</title>
+<meta name="description" content="Пробный тест ЕНТ по физике: 40 заданий, баллы и разбор ошибок в конце.">
+<meta name="theme-color" content="#1f5fa8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ЕНТ физика">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one question "sheet" at a time, ENT-style answer bubbles, navigator grid below; results as a report sheet */
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#eef0ec; --surface:#ffffff; --ink:#1b2430; --muted:#5b6672; --line:#d6dbd3;
+  --accent:#1f5fa8; --accent-ink:#ffffff; --mark:#fff1b8; --good:#2f7d4f; --bad:#b8403a; --water:#cfe6f7;
+  --f-display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11151a; --surface:#1a2028; --ink:#e6e9ec; --muted:#9aa4ae; --line:#2e3742;
+  --accent:#7aaef0; --accent-ink:#0d1520; --mark:#3a3418; --good:#62c48a; --bad:#ec7a70; --water:#1d3a52; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151a; --surface:#1a2028; --ink:#e6e9ec; --muted:#9aa4ae; --line:#2e3742;
+  --accent:#7aaef0; --accent-ink:#0d1520; --mark:#3a3418; --good:#62c48a; --bad:#ec7a70; --water:#1d3a52; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.wrap{max-width:820px;margin:0 auto;padding-block:16px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:16px}
+h1,h2{font-family:var(--f-display);font-weight:700;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(1.5rem,5vw,2.2rem);line-height:1.15}
+h2{font-size:1.15rem}
+.eyebrow{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:500;font-size:.95rem}
+.brand b{color:var(--accent)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-family:var(--f-mono);font-size:.85rem;padding:6px 10px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.qhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.qnum{font-family:var(--f-display);font-size:1rem}
+.qtype{font-size:.8rem;color:var(--muted)}
+.qtext{font-size:1.05rem;max-width:65ch}
+.ctx{background:var(--bg);border-radius:10px;padding:12px 14px;font-size:.95rem;color:var(--ink)}
+.ctx strong{font-weight:600}
+.fig{overflow-x:auto}
+.fig svg{display:block;max-width:100%;height:auto;margin:0 auto;color:var(--ink)}
+.fig svg text{fill:var(--ink);font-family:var(--f-body);font-size:13px}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:inherit;background:transparent;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt:focus-visible,.btn:focus-visible,.cell:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bub{flex:none;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--muted);display:grid;place-items:center;font-weight:600;font-size:.85rem}
+.multi .bub{border-radius:7px}
+.opt.on{background:var(--mark);border-color:var(--accent)}
+.opt.on .bub{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.match{display:flex;flex-direction:column;gap:12px}
+.mrow{display:flex;flex-direction:column;gap:6px}
+.mrow label{font-weight:500}
+select{font:inherit;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;width:100%}
+.nav{display:flex;gap:8px;justify-content:space-between;flex-wrap:wrap}
+.btn{font:inherit;font-weight:600;border-radius:10px;padding:11px 18px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.danger{border-color:var(--bad);color:var(--bad)}
+.btn[disabled]{opacity:.4;cursor:default}
+.grid{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+@media (max-width:480px){.grid{grid-template-columns:repeat(8,1fr)}}
+.cell{font:inherit;font-family:var(--f-mono);font-size:.8rem;padding:7px 0;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+.cell.done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.cell.cur{outline:2px solid var(--ink);outline-offset:1px}
+.legend{font-size:.8rem;color:var(--muted)}
+.confirm{border:1px solid var(--bad);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.rules{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;max-width:65ch}
+.score{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.score .big{font-family:var(--f-display);font-size:clamp(2.6rem,10vw,4rem);line-height:1;font-variant-numeric:tabular-nums}
+.score .of{font-family:var(--f-display);color:var(--muted);font-size:1.3rem}
+.bar{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.part{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.part span{font-size:.8rem;color:var(--muted)}
+.part b{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.err{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+.err:first-child{border-top:0;padding-top:0}
+.err .h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.err .h b{font-family:var(--f-display);font-weight:500;font-size:.95rem}
+.pts{font-family:var(--f-mono);font-size:.8rem;color:var(--bad)}
+.yours{color:var(--bad)} .right{color:var(--good)}
+.exp{color:var(--muted);font-size:.93rem;max-width:65ch}
+.ok{color:var(--good);font-weight:600}
+@media (prefers-reduced-motion:no-preference){.opt,.cell{transition:background .12s,border-color .12s}}
+</style>
+
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+const CTX_HEATER = '<strong>Водонагреватель.</strong> Схема водонагревателя построена так, как показано на чертеже. Часть проводника погружают в воду с температурой 40 °C и массой 2 кг. (t<sub>кип</sub> = 100 °C, c<sub>воды</sub> = 4200 Дж/кг·°C, r = 2,3·10³ кДж/кг)';
+
+const Q = [
+ {t:'s',x:'Два параллельных бесконечно длинных проводника с токами 10 А находятся на расстоянии 0,5 м друг от друга. Чему равна сила взаимодействия частей этих проводников длиной 2 м? (μ<sub>0</sub> = 4π·10<sup>−7</sup> Тл·м/А)',o:['0,04 мН','0,01 мН','0,02 мН','0,08 мН'],a:3,e:'F = μ₀I₁I₂L/(2πd) = 2·10⁻⁷·10·10·2/0,5 = 8·10⁻⁵ Н = 0,08 мН.'},
+ {t:'s',x:'Ребёнок скатывается на санках с горки под углом 30°. Определите ускорение ребёнка. (Силой трения пренебречь; g = 10 м/с², sin30° = 0,5)',o:['2 м/с²','5 м/с²','7 м/с²','4 м/с²'],a:1,e:'Без трения a = g·sinα = 10·0,5 = 5 м/с².'},
+ {t:'s',f:'pulley',x:'Определите кинетическую энергию тела массой 8 кг через 2 с после освобождения системы тел, приведённой на рисунке. (g = 10 м/с²)',o:['863 Дж','784 Дж','686 Дж','721 Дж'],a:1,e:'a = (80 − 0,5·20)/10 = 7 м/с²; v = 7·2 = 14 м/с; E = 8·14²/2 = 784 Дж.'},
+ {t:'s',x:'Определите высоту дерева с тенью 10 м, если тень человека ростом 1,8 м составляет 90 см.',o:['15 м','25 м','30 м','20 м'],a:3,e:'Высота в 2 раза больше тени (1,8 / 0,9 = 2), значит дерево 10·2 = 20 м.'},
+ {t:'s',x:'Период полураспада неизвестного элемента равен 210 часам. Время, в течение которого масса этого элемента уменьшится в 16 раз, равно',o:['28 дням','21 дню','26,6 дням','35 дням'],a:3,e:'16 = 2⁴ → 4 периода: 4·210 = 840 ч = 35 суток.'},
+ {t:'s',x:'Энергия фотона, поглощаемого фотокатодом, составляет 3 эВ. Работа выхода электрона из катода 1,6 эВ. Найдите скорость вылетающего фотоэлектрона. (1 эВ = 1,6·10<sup>−19</sup> Дж; m<sub>e</sub> = 9,1·10<sup>−31</sup> кг)',o:['600 км/с','700 км/с','650 км/с','750 км/с'],a:1,e:'Eк = 3 − 1,6 = 1,4 эВ = 2,24·10⁻¹⁹ Дж; v = √(2Eк/m) ≈ 7·10⁵ м/с = 700 км/с.'},
+ {t:'s',x:'Какая из нижеприведённых величин соответствует соотношению g/(GR)? (g — ускорение свободного падения; G — гравитационная постоянная; R — радиус)',o:['Сила','Частота','Скорость','Плотность'],a:3,e:'g = GM/R², поэтому g/(GR) = M/R³ — масса на объём, то есть плотность (с точностью до числа).'},
+ {t:'s',x:'В шахту свободно падает бадья массой 280 кг. Её вес при этом равен…',o:['0','28 Н','1400 Н','280 Н'],a:0,e:'При свободном падении тело в невесомости: вес равен нулю.'},
+ {t:'s',x:'Определите общее сопротивление при последовательном соединении трёх резисторов сопротивлениями 2 Ом, 4 Ом и 8 Ом.',o:['7 Ом','2 Ом','4 Ом','14 Ом'],a:3,e:'Последовательно сопротивления складываются: 2 + 4 + 8 = 14 Ом.'},
+ {t:'s',x:'Тело с ускорением 9 м/с² прошло 200 м. Конечная скорость тела равна',o:['50 м/с','60 м/с','30 м/с','45 м/с'],a:1,e:'v² = 2aS = 2·9·200 = 3600 → v = 60 м/с.'},
+ {t:'s',x:'В закрытом сосуде содержится водород массой 8 г и кислород массой 32 г. Найдите изменение внутренней энергии газовой смеси при охлаждении её на 28 °C. (M(H₂O) = 0,018 кг/моль, R = 8,31 Дж/моль·К)',o:['−1847,9 Дж','−3968,3 Дж','−2133,4 Дж','−1551,2 Дж'],a:3,e:'Ответ составителей: смесь считают водяным паром (40 г, M = 0,018, i = 6): ΔU = 3·(0,04/0,018)·8,31·(−28) ≈ −1551,2 Дж. В условии есть ошибка.'},
+ {t:'s',x:'Резистор с сопротивлением 20 Ом подключён параллельно лампе с сопротивлением 60 Ом. Найдите общее сопротивление в цепи.',o:['80 Ом','15 Ом','40 Ом','12 Ом'],a:1,e:'Параллельно: R = 20·60/(20 + 60) = 15 Ом.'},
+ {t:'s',x:'Подвижный блок…',o:['не даёт выигрыша в силе','даёт выигрыш в силе в 4 раза','даёт выигрыш в силе в 2 раза','даёт выигрыш в силе в 1,5 раза'],a:2,e:'Груз держат два участка верёвки, каждый — половину веса.'},
+ {t:'s',x:'Радиолокатор работает в импульсном режиме. Частота повторения импульсов равна 0,4 МГц. Найти наибольшую дальность обнаружения цели данным радиолокатором (c = 3·10<sup>8</sup> м/с).',o:['420 м','515 м','375 м','625 м'],a:2,e:'T = 1/f = 2,5·10⁻⁶ с; сигнал идёт туда и обратно: L = cT/2 = 375 м.'},
+ {t:'s',x:'При уменьшении объёма идеального газа на 10% и повышении температуры на 16 К его давление увеличилось на 20%. Определите начальную температуру газа.',o:['150 К','250 К','200 К','100 К'],a:2,e:'1,2·0,9/(T + 16) = 1/T → 1,08T = T + 16 → T = 200 К.'},
+ {t:'s',x:'Автомобиль движется четверть пути со скоростью 60 км/ч, а остальную часть — со скоростью 20 км/ч. Найдите среднюю скорость автомобиля на всём пути.',o:['24 км/ч','30 км/ч','20 км/ч','30 км/ч'],a:0,e:'Возьмём путь 240 км: 60 км за 1 ч и 180 км за 9 ч. 240 / 10 = 24 км/ч.'},
+ {t:'s',x:'ЭДС цепи 240 В, а внутреннее сопротивление 0,5 Ом. Если сила тока 16 А, то внешнее сопротивление равно',o:['10,5 Ом','15 Ом','12 Ом','14,5 Ом'],a:3,e:'R = ε/I − r = 240/16 − 0,5 = 14,5 Ом.'},
+ {t:'s',x:'Рамка площадью 500 см² вращается с частотой 20 Гц в однородном магнитном поле с индукцией 0,1 Тл. Амплитудное значение ЭДС равно 63 В. Найдите количество витков.',o:['70','100','50','80'],a:1,e:'ε = NBSω, ω = 2π·20 ≈ 125,7; N = 63/(0,1·0,05·125,7) ≈ 100.'},
+ {t:'s',x:'Движущийся лифт резко останавливается. Если в этот момент коробка внутри лифта подпрыгивает, то определите направление движения и величину ускорения торможения лифта.',o:['вверх, a > g','вверх, a < g','вниз, a > g','вниз, a < g'],a:0,e:'Лифт ехал вверх и тормозит быстрее, чем g: пол «уходит» из-под коробки, и она по инерции подлетает.'},
+ {t:'s',x:'Количество вещества кислорода массой 64 г равно… (M = 32·10<sup>−3</sup> кг/моль)',o:['4 моль','2 моль','1 моль','3 моль'],a:1,e:'ν = m/M = 64/32 = 2 моль.'},
+ {t:'s',x:'Полная энергия гармонического колебания 2200 Дж, а максимальная сила, действующая на тело, 22 кН. Амплитуда колебания',o:['0,2 м','0,6 м','0,5 м','0,4 м'],a:0,e:'E = F<sub>max</sub>·A/2 → A = 2·2200/22000 = 0,2 м.'},
+ {t:'s',x:'Принцип действия гидравлической машины основан на…',o:['законе Ньютона','принципе Галилея','законе Паскаля','законе Гука'],a:2,e:'Давление в жидкости передаётся во все стороны одинаково — закон Паскаля.'},
+ {t:'s',x:'Вдоль оси OX движутся две точки: первая — по закону x₁ = 10 + 3t, вторая — по закону x₂ = 4 + 5t. В какой момент времени они встретятся?',o:['1 с','4 с','2 с','3 с'],a:3,e:'10 + 3t = 4 + 5t → 2t = 6 → t = 3 с.'},
+ {t:'s',x:'Длина математического маятника равна 4 м. Определите период колебаний маятника. (g = 10 м/с²)',o:['4 с','2 с','1 с','6 с'],a:0,e:'T = 2π√(l/g) = 6,28·√0,4 ≈ 4 с.'},
+ {t:'s',x:'Определите изменение кинетической энергии тела при уменьшении его массы в 4 раза и увеличении скорости в 3 раза.',o:['Увеличится в 12 раз','Увеличится в 4 раза','Увеличится в 2,25 раза','Уменьшится в 0,75 раза'],a:2,e:'E ~ m·v²: (1/4)·3² = 9/4 = 2,25.'},
+ {t:'s',c:1,f:'heater',x:'Общее сопротивление цепи равно',o:['70 Ом','12 Ом','50 Ом','24 Ом'],a:2,e:'Резисторы соединены последовательно: 20 + 30 = 50 Ом.'},
+ {t:'s',c:1,f:'heater',x:'Общая сила тока в цепи равна',o:['2,2 А','1,1 А','5,5 А','4,4 А'],a:3,e:'I = U/R = 220/50 = 4,4 А.'},
+ {t:'s',c:1,f:'heater',x:'Использованная электроэнергия за 3 минуты равна',o:['245,75 кДж','205 кДж','174,24 кДж','185 кДж'],a:2,e:'W = U·I·t = 220·4,4·180 = 174 240 Дж.'},
+ {t:'s',c:1,f:'heater',x:'Количество теплоты, необходимое для кипячения воды, равно',o:['475 кДж','625 кДж','504 кДж','403 кДж'],a:2,e:'Q = c·m·Δt = 4200·2·60 = 504 000 Дж.'},
+ {t:'s',c:1,f:'heater',x:'Часть воды, оставшаяся в водонагревателе через 18 минут, равна',o:['0,0268','0,2','0,5','0,374'],a:0,e:'Воду греет только R₂: P = 4,4²·30 = 580,8 Вт; за 1080 с Q ≈ 627 кДж; на испарение остаётся ≈ 123 кДж → испарится ≈ 0,0536 кг, это 0,0268 от 2 кг. (В условии неточность: это доля испарившейся воды.)'},
+ {t:'m',f:'refr',x:'Луч света проходит из одной среды в другую, как показано на рисунке (α > β). Установите соответствие между величинами и их изменениями.',r:['Длина волны света','Частота света'],o:['увеличится','невозможно определить','не изменится','уменьшится'],a:[3,2],e:'Луч прижимается к перпендикуляру — вторая среда плотнее, свет в ней медленнее. Частота не меняется, поэтому длина волны уменьшается.'},
+ {t:'m',f:'vt',x:'На графике V–T показан циклический процесс 1→2→3→4→1, совершаемый идеальным газом.',r:['При переходе 2→3','При переходе 3→4'],o:['уменьшается внутренняя энергия газа','совершается работа газом','газ не совершает работу','газ совершает положительную работу'],a:[2,1],e:'2→3: объём не меняется — работы нет. 3→4: газ сжимают при постоянной температуре; ответ составителей — «совершается работа газом» (точнее — над газом).'},
+ {t:'m',f:'it',x:'На рисунке приведён график зависимости силы тока i от времени t в цепи с индуктивностью L. Каким промежуткам времени соответствуют наибольшее и наименьшее значения (модули) ЭДС самоиндукции?',r:['Наибольшему значению','Наименьшему значению'],o:['1–5 с','5–6 с','0–1 с','6–8 с'],a:[1,0],e:'ЭДС самоиндукции тем больше, чем круче график. Самый крутой участок 5–6 с, самый пологий 1–5 с.'},
+ {t:'m',f:'rays',x:'Сосуд с радиоактивным элементом поместили в магнитное поле. На рисунке показаны следы излучения. Если цифре 3 соответствует альфа-излучение, определите излучения, соответствующие цифрам 1 и 2.',r:['Цифра 1','Цифра 2'],o:['Гамма','Невозможно определить, какому лучу соответствует направление','Альфа','Бета'],a:[3,0],e:'Гамма не заряжена и летит прямо (2). Бета заряжена противоположно альфе и отклоняется в другую сторону (1).'},
+ {t:'m',x:'Установите соответствие между физической величиной и её единицей измерения в СИ.',r:['Индуктивность','Магнитный поток'],o:['Тесла (Тл)','Генри (Гн)','Фарад (Ф)','Вебер (Вб)'],a:[1,3],e:'Индуктивность — генри, магнитный поток — вебер. Тесла — индукция поля, фарад — ёмкость.'},
+ {t:'k',x:'Если два математических маятника с разностью длин 32 см совершают за одно и то же время 50 и 30 колебаний, то длины маятников равны',o:['10 см','60 см','20 см','50 см','18 см','42 см'],a:[3,4],e:'l₁/l₂ = (30/50)² = 9/25; 25k − 9k = 32 → k = 2: 18 см и 50 см.'},
+ {t:'k',x:'Лампа подключена к источнику с ЭДС 6 В, а напряжение на её концах составляет 3 В. Найдите КПД источника тока.',o:['2','0,3','0,5','0,2','20%','50%'],a:[2,5],e:'η = U/ε = 3/6 = 0,5 = 50% (оба варианта — одно и то же число).'},
+ {t:'k',f:'circ',x:'К источнику тока с ЭДС 5 В подключены резисторы R₁ = 3 Ом, R₂ = 2 Ом и R₃ = 1 Ом, как показано на рисунке. Определите мощность резистора R₁. (Внутренним сопротивлением источника пренебречь)',o:['2 Вт','1 Вт','6 Вт','3 Вт','4 Вт','5 Вт'],a:[3],e:'Ветка R₁ + R₂ = 5 Ом получает все 5 В: I = 1 А; P = I²R₁ = 3 Вт.'},
+ {t:'k',f:'coll',x:'На рисунке показано, как два тела движутся после неупругого столкновения. Определите соотношение V₁/V₂. (sin37° = cos53° ≈ 0,6; sin53° = cos37° ≈ 0,8)',o:['2','2/3','3/2','1/2','8/9','9/8'],a:[3],e:'По x: 3mV₁ = 5mV·0,6; по y: 2mV₂ = 5mV·0,8. Делим: 3V₁/(2V₂) = 3/4 → V₁/V₂ = 1/2.'},
+ {t:'k',x:'Физическая величина, не измеряемая в джоулях, — это',o:['работа','количество теплоты','мощность','КПД','внутренняя энергия','кинетическая энергия'],a:[2,3],e:'Мощность — в ваттах, КПД — без единиц (или %). Остальное — в джоулях.'}
+];
+Q.forEach((q,i)=>q.n=i+1);
+const MAX = q => q.t==='s'?1:2;
+const L = 'ABCDEF';
+
+function mk(id){return `<defs><marker id="${id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>`}
+const FIG = {
+ pulley:`<svg viewBox="0 0 300 190" width="300" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="178" x2="290" y2="178"/><rect x="40" y="72" width="170" height="106"/><rect x="88" y="40" width="42" height="32" fill="currentColor" fill-opacity=".55"/><text x="94" y="32" stroke="none">2 кг</text><text x="102" y="130" stroke="none">μ = 0,5</text><line x1="130" y1="56" x2="222" y2="56"/><circle cx="222" cy="64" r="8"/><line x1="210" y1="72" x2="222" y2="64"/><line x1="230" y1="64" x2="230" y2="118"/><rect x="216" y="118" width="28" height="30" fill="currentColor" fill-opacity=".2"/><text x="250" y="140" stroke="none">8 кг</text></svg>`,
+ heater:`<svg viewBox="0 0 320 210" width="320" fill="none" stroke="currentColor" stroke-width="2"><rect x="30" y="128" width="230" height="74" fill="var(--water)" stroke="currentColor"/><text x="92" y="22" stroke="none" font-weight="600">U = 220 В</text><circle cx="110" cy="34" r="4"/><circle cx="160" cy="34" r="4"/><polyline points="106,34 55,34 55,170 100,170"/><rect x="100" y="160" width="60" height="20" fill="var(--surface)"/><polyline points="160,170 220,170 220,120"/><rect x="210" y="70" width="20" height="50" fill="var(--surface)"/><polyline points="220,70 220,34 164,34"/><text x="238" y="100" stroke="none">R₁ = 20 Ом</text><text x="150" y="196" stroke="none">R₂ = 30 Ом</text><text x="40" y="196" stroke="none">вода</text></svg>`,
+ refr:`<svg viewBox="0 0 260 220" width="260" fill="none" stroke="currentColor" stroke-width="2">${mk('a1')}<line x1="20" y1="100" x2="240" y2="100"/><line x1="130" y1="10" x2="130" y2="210" stroke-dasharray="5 4"/><line x1="40" y1="30" x2="128" y2="98" marker-end="url(#a1)"/><path d="M130 72 A28 28 0 0 0 108 83" /><text x="104" y="66" stroke="none">α</text><line x1="130" y1="100" x2="168" y2="200"/><path d="M130 132 A32 32 0 0 0 142 130"/><text x="138" y="152" stroke="none">β</text><text x="180" y="88" stroke="none">среда 1</text><text x="180" y="122" stroke="none">среда 2</text></svg>`,
+ vt:`<svg viewBox="0 0 300 200" width="300" fill="none" stroke="currentColor" stroke-width="2">${mk('a2')}<line x1="40" y1="182" x2="40" y2="14" marker-end="url(#a2)"/><line x1="40" y1="182" x2="288" y2="182" marker-end="url(#a2)"/><text x="20" y="24" stroke="none">V</text><text x="276" y="198" stroke="none">T</text><text x="26" y="196" stroke="none">0</text><line x1="90" y1="140" x2="90" y2="92" marker-end="url(#a2)"/><line x1="90" y1="95" x2="90" y2="50"/><line x1="90" y1="50" x2="158" y2="50" marker-end="url(#a2)"/><line x1="155" y1="50" x2="220" y2="50"/><line x1="220" y1="50" x2="220" y2="98" marker-end="url(#a2)"/><line x1="220" y1="95" x2="220" y2="140"/><line x1="220" y1="140" x2="152" y2="140" marker-end="url(#a2)"/><line x1="155" y1="140" x2="90" y2="140"/><g stroke="none" fill="currentColor"><circle cx="90" cy="140" r="3.5"/><circle cx="90" cy="50" r="3.5"/><circle cx="220" cy="50" r="3.5"/><circle cx="220" cy="140" r="3.5"/></g><text x="74" y="146" stroke="none">1</text><text x="80" y="40" stroke="none">2</text><text x="224" y="40" stroke="none">3</text><text x="228" y="146" stroke="none">4</text></svg>`,
+ it:`<svg viewBox="0 0 310 200" width="310" fill="none" stroke="currentColor" stroke-width="2">${mk('a3')}<line x1="40" y1="170" x2="40" y2="14" marker-end="url(#a3)"/><line x1="40" y1="170" x2="300" y2="170" marker-end="url(#a3)"/><text x="10" y="24" stroke="none">i, А</text><text x="282" y="160" stroke="none">t, с</text><g stroke-dasharray="4 4" stroke-width="1"><line x1="40" y1="120" x2="280" y2="120"/><line x1="40" y1="70" x2="190" y2="70"/><line x1="70" y1="120" x2="70" y2="170"/><line x1="190" y1="70" x2="190" y2="170"/><line x1="280" y1="120" x2="280" y2="170"/></g><polyline points="40,170 70,120 190,70 220,170 280,120" stroke-width="2.5"/><g stroke="none"><text x="35" y="188">0</text><text x="66" y="188">1</text><text x="96" y="188">2</text><text x="156" y="188">4</text><text x="186" y="188">5</text><text x="216" y="188">6</text><text x="276" y="188">8</text></g></svg>`,
+ rays:`<svg viewBox="0 0 280 230" width="280" fill="none" stroke="currentColor" stroke-width="2"><rect x="128" y="182" width="44" height="40"/><rect x="138" y="172" width="24" height="10"/><path d="M150 172 Q120 80 25 72" stroke-dasharray="6 4"/><path d="M146 172 Q118 90 25 86" stroke-dasharray="6 4"/><line x1="150" y1="172" x2="150" y2="22"/><line x1="146" y1="172" x2="144" y2="24"/><path d="M152 172 Q172 80 240 40"/><path d="M154 172 Q182 92 254 58"/><g stroke="none"><text x="40" y="60">(1)</text><text x="138" y="16">(2)</text><text x="238" y="34">(3)</text><text x="22" y="118" font-weight="600">B⃗</text></g></svg>`,
+ circ:`<svg viewBox="0 0 280 210" width="280" fill="none" stroke="currentColor" stroke-width="2"><polyline points="30,190 30,40 60,40"/><rect x="60" y="30" width="55" height="20" fill="var(--surface)"/><line x1="115" y1="40" x2="150" y2="40"/><rect x="150" y="30" width="55" height="20" fill="var(--surface)"/><polyline points="205,40 250,40 250,190"/><polyline points="30,115 105,115"/><rect x="105" y="105" width="60" height="20" fill="var(--surface)"/><polyline points="165,115 250,115"/><line x1="30" y1="190" x2="133" y2="190"/><line x1="147" y1="190" x2="250" y2="190"/><line x1="133" y1="176" x2="133" y2="204" stroke-width="2.5"/><line x1="147" y1="182" x2="147" y2="198" stroke-width="4"/><g stroke="none" fill="currentColor"><circle cx="30" cy="115" r="3.5"/><circle cx="250" cy="115" r="3.5"/></g><g stroke="none"><text x="78" y="22">R₁</text><text x="168" y="22">R₂</text><text x="126" y="146">R₃</text><text x="150" y="172">ε</text></g></svg>`,
+ coll:`<svg viewBox="0 0 300 220" width="300" fill="none" stroke="currentColor" stroke-width="2">${mk('a4')}<line x1="40" y1="110" x2="280" y2="110" stroke-dasharray="4 4" stroke-width="1"/><line x1="200" y1="20" x2="200" y2="210" stroke-dasharray="4 4" stroke-width="1"/><g stroke="none" fill="currentColor"><circle cx="60" cy="110" r="6"/><circle cx="200" cy="200" r="6"/><circle cx="200" cy="110" r="6"/></g><line x1="68" y1="110" x2="130" y2="110" marker-end="url(#a4)"/><line x1="200" y1="192" x2="200" y2="148" marker-end="url(#a4)"/><line x1="204" y1="104" x2="244" y2="50" marker-end="url(#a4)"/><path d="M228 110 A28 28 0 0 0 217 88"/><g stroke="none"><text x="30" y="115">3m</text><text x="92" y="100">V₁</text><text x="208" y="214">2m</text><text x="208" y="165">V₂</text><text x="248" y="48">V</text><text x="232" y="100">53°</text><text x="186" y="100">O</text></g></svg>`
+};
+
+/* ---------- state ---------- */
+const KEY='ent-fizika-probnik-1';
+let S = {ans:{}, cur:0, started:null, done:false};
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s&&s.ans) S=s;}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let view = S.started ? (S.done?'result':'test') : 'start';
+let confirming=false, tick=null;
+const app=document.getElementById('app');
+
+function answered(q){const v=S.ans[q.n]; if(v==null) return false; if(q.t==='s') return true; if(q.t==='k') return v.length>0; return v.some(x=>x>=0);}
+function points(q){
+  const v=S.ans[q.n];
+  if(q.t==='s') return v===q.a?1:0;
+  if(q.t==='m'){ if(!v) return 0; return v.filter((x,i)=>x===q.a[i]).length; }
+  const sel=v||[]; if(!sel.length) return 0;
+  const errs=q.a.filter(x=>!sel.includes(x)).length + sel.filter(x=>!q.a.includes(x)).length;
+  return errs===0?2:errs===1?1:0;
+}
+const fmt=s=>{s=Math.max(0,s|0);const h=s/3600|0,m=(s%3600)/60|0,c=s%60;return `${h}:${String(m).padStart(2,'0')}:${String(c).padStart(2,'0')}`};
+const elapsed=()=>S.started?((S.done?S.finished:Date.now())-S.started)/1000:0;
+const typeLabel=q=>q.t==='s'?'Один правильный ответ · 1 балл':q.t==='m'?'Установите соответствие · 2 балла':'Один или несколько правильных ответов · 2 балла';
+
+function render(){ clearInterval(tick); ({start:rStart,test:rTest,result:rResult})[view](); window.scrollTo({top:0}); }
+
+function rStart(){
+  const has=Object.keys(S.ans).length>0;
+  app.innerHTML=`
+  <div class="sheet">
+    <div class="eyebrow">ЕНТ · Физика</div>
+    <h1>ЕНТ физика пробник 1</h1>
+    <p style="margin:0;max-width:65ch">40 заданий в формате ЕНТ. Правильные ответы не показываются до конца теста. После завершения увидишь баллы и разбор заданий с ошибками.</p>
+    <ul class="rules">
+      <li>1–30: один правильный ответ — 1 балл (26–30 по общему условию).</li>
+      <li>31–35: соответствие — 2 балла, по 1 за каждую верную пару.</li>
+      <li>36–40: один или несколько ответов — 2 балла без ошибок, 1 балл при одной ошибке.</li>
+      <li>Максимум — 50 баллов. Прогресс сохраняется в этом браузере.</li>
+    </ul>
+    <div class="nav" style="justify-content:flex-start">
+      <button class="btn primary" id="go">${has?'Продолжить':'Начать тест'}</button>
+      ${has?'<button class="btn" id="reset">Начать заново</button>':''}
+    </div>
+  </div>`;
+  document.getElementById('go').onclick=()=>{ if(!S.started) S.started=Date.now(); save(); view='test'; render(); };
+  const r=document.getElementById('reset'); if(r) r.onclick=()=>{S={ans:{},cur:0,started:Date.now(),done:false};save();view='test';render();};
+}
+
+function rTest(){
+  const q=Q[S.cur], v=S.ans[q.n];
+  const nDone=Q.filter(answered).length;
+  let body='';
+  if(q.t==='m'){
+    body=`<div class="match">${q.r.map((r,i)=>`<div class="mrow"><label for="m${q.n}_${i}">${'AB'[i]}) ${r}</label><select id="m${q.n}_${i}" data-i="${i}"><option value="-1">— Выбрать —</option>${q.o.map((o,j)=>`<option value="${j}" ${v&&v[i]===j?'selected':''}>${o}</option>`).join('')}</select></div>`).join('')}</div>`;
+  } else {
+    const sel=q.t==='s'?[v]:(v||[]);
+    body=`<div class="opts ${q.t==='k'?'multi':''}">${q.o.map((o,j)=>`<button class="opt ${sel.includes(j)?'on':''}" data-j="${j}" aria-pressed="${sel.includes(j)}"><span class="bub">${L[j]}</span><span>${o}</span></button>`).join('')}</div>`;
+  }
+  app.innerHTML=`
+  <div class="top">
+    <div class="brand"><b>ЕНТ</b> физика · пробник 1</div>
+    <div class="chips"><span class="chip" id="tm">${fmt(elapsed())}</span><span class="chip">${nDone}/40</span></div>
+  </div>
+  <div class="sheet">
+    <div class="qhead"><span class="qnum">Вопрос ${q.n} из 40</span><span class="qtype">${typeLabel(q)}</span></div>
+    ${q.c?`<div class="ctx">${CTX_HEATER}</div>`:''}
+    ${q.f?`<div class="fig">${FIG[q.f]}</div>`:''}
+    <div class="qtext">${q.x}</div>
+    ${body}
+    <div class="nav">
+      <button class="btn" id="prev" ${S.cur===0?'disabled':''}>← Назад</button>
+      ${S.cur<39?'<button class="btn primary" id="next">Дальше →</button>':'<button class="btn primary" id="fin2">Завершить тест</button>'}
+    </div>
+  </div>
+  <div class="sheet">
+    <div class="qhead"><h2>Задания</h2><span class="legend">синие — с ответом</span></div>
+    <div class="grid">${Q.map((x,i)=>`<button class="cell ${answered(x)?'done':''} ${i===S.cur?'cur':''}" data-k="${i}" aria-label="Вопрос ${x.n}">${x.n}</button>`).join('')}</div>
+    ${confirming?`<div class="confirm"><div>${40-nDone?`Без ответа осталось заданий: <b>${40-nDone}</b>. `:''}Завершить тест и посмотреть результат?</div><div class="nav" style="justify-content:flex-start"><button class="btn danger" id="yes">Завершить</button><button class="btn" id="no">Вернуться к тесту</button></div></div>`
+      :`<div><button class="btn danger" id="fin">Завершить тест</button></div>`}
+  </div>`;
+  tick=setInterval(()=>{const t=document.getElementById('tm'); if(t) t.textContent=fmt(elapsed());},1000);
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const j=+b.dataset.j;
+    if(q.t==='s') S.ans[q.n]=j;
+    else{ const a=new Set(S.ans[q.n]||[]); a.has(j)?a.delete(j):a.add(j); S.ans[q.n]=[...a].sort(); }
+    save(); render();
+  });
+  app.querySelectorAll('select').forEach(s=>s.onchange=()=>{
+    const a=S.ans[q.n]?[...S.ans[q.n]]:[-1,-1]; a[+s.dataset.i]=+s.value; S.ans[q.n]=a; save();
+    const n=Q.filter(answered).length; app.querySelectorAll('.chip')[1].textContent=n+'/40';
+    app.querySelector(`[data-k="${S.cur}"]`).classList.toggle('done',answered(q));
+  });
+  app.querySelectorAll('.cell').forEach(c=>c.onclick=()=>{S.cur=+c.dataset.k;save();render();});
+  const go=d=>{S.cur+=d;save();render();};
+  document.getElementById('prev').onclick=()=>go(-1);
+  const nx=document.getElementById('next'); if(nx) nx.onclick=()=>go(1);
+  const askFin=()=>{confirming=true;render();setTimeout(()=>{const y=document.getElementById('yes'); if(y){y.scrollIntoView({block:'center'});y.focus();}},0);};
+  const f=document.getElementById('fin'); if(f) f.onclick=askFin;
+  const f2=document.getElementById('fin2'); if(f2) f2.onclick=askFin;
+  const y=document.getElementById('yes'); if(y) y.onclick=()=>{S.done=true;S.finished=Date.now();save();confirming=false;view='result';render();};
+  const n=document.getElementById('no'); if(n) n.onclick=()=>{confirming=false;render();};
+}
+
+function ansText(q,v){
+  if(q.t==='s') return v==null?'нет ответа':`${L[v]}) ${q.o[v]}`;
+  if(q.t==='k') return v&&v.length?v.map(j=>`${L[j]}) ${q.o[j]}`).join('; '):'нет ответа';
+  return q.r.map((r,i)=>`${r} — ${v&&v[i]>=0?q.o[v[i]]:'нет ответа'}`).join('; ');
+}
+
+function rResult(){
+  const tot=Q.reduce((s,q)=>s+points(q),0);
+  const part=(a,b)=>{const qs=Q.slice(a-1,b);return [qs.reduce((s,q)=>s+points(q),0),qs.reduce((s,q)=>s+MAX(q),0)]};
+  const P=[['1–25 · один ответ',...part(1,25)],['26–30 · водонагреватель',...part(26,30)],['31–35 · соответствие',...part(31,35)],['36–40 · несколько ответов',...part(36,40)]];
+  const bad=Q.filter(q=>points(q)<MAX(q));
+  app.innerHTML=`
+  <div class="sheet">
+    <div class="eyebrow">Результат · ЕНТ физика пробник 1</div>
+    <div class="score"><span class="big">${tot}</span><span class="of">из 50 баллов</span></div>
+    <div class="bar"><i style="width:${tot*2}%"></i></div>
+    <div class="legend">Время: ${fmt(elapsed())} · верно полностью: ${40-bad.length} из 40</div>
+    <div class="parts">${P.map(p=>`<div class="part"><span>${p[0]}</span><b>${p[1]} / ${p[2]}</b></div>`).join('')}</div>
+    <div class="nav" style="justify-content:flex-start"><button class="btn primary" id="again">Пройти заново</button></div>
+  </div>
+  <div class="sheet">
+    <h2>${bad.length?`Задания с ошибками (${bad.length})`:'Ошибок нет'}</h2>
+    ${bad.length?bad.map(q=>`<div class="err">
+      <div class="h"><b>Вопрос ${q.n}</b><span class="pts">${points(q)} из ${MAX(q)}</span></div>
+      <div class="qtext">${q.x}</div>
+      <div class="yours">Твой ответ: ${ansText(q,S.ans[q.n])}</div>
+      <div class="right">Правильно: ${ansText(q,q.t==='s'?q.a:q.a)}</div>
+      <div class="exp">${q.e}</div></div>`).join('')
+      :'<p class="ok" style="margin:0">Все 40 заданий решены верно.</p>'}
+  </div>`;
+  document.getElementById('again').onclick=()=>{S={ans:{},cur:0,started:Date.now(),done:false};save();view='test';render();};
+}
+render();
+</script>
+<script>
+if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));}
+</script>
+</body>
+</html>

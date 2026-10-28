@@ -1,0 +1,16 @@
+{
+  "name": "ЕНТ физика пробник 1",
+  "short_name": "ЕНТ физика",
+  "description": "Пробный тест ЕНТ по физике: 40 заданий, баллы и разбор ошибок в конце.",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef0ec",
+  "theme_color": "#1f5fa8",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
